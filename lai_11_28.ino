@@ -1,9 +1,10 @@
 #include "Config.h"       // 引入 WiFi 和 MQTT 設定
+#include "Utility.h"  // for debug
 #include <WiFi.h>
 #include <PubSubClient.h>
 #include "MQTTControl.h" // 引入模組化函式庫
 #include "timer.h"
-
+#include "SensorHandler.h"
 
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -11,8 +12,8 @@ PubSubClient client(espClient);
 // MQTT 回調函式
 void callback(char* topic, byte* payload, unsigned int length) {
     // 列印接收到的主題
-    Serial.print("Received topic: ");
-    Serial.println(topic);
+    DEBUG_PRINT("Received topic: ");
+    DEBUG_PRINT(topic);
 
     // 將 payload 轉換為字串
     String message = "";
@@ -21,17 +22,15 @@ void callback(char* topic, byte* payload, unsigned int length) {
     }
     
     // 列印接收到的完整消息
-    Serial.print("Received message: ");
-    Serial.println(message);
+    DEBUG_PRINT("Received message: ");
+    DEBUG_PRINT(message);
 
     // 提取並解析 MQTT 消息
     MessageResult result = extractMessage(message);
     if (result.isValid) {
         // 列印提取的 macAddr 和 data
-        Serial.print("Extracted macAddr: ");
-        Serial.println(result.macAddr);
-        Serial.print("Extracted data: ");
-        Serial.println(result.data);
+        DEBUG_PRINT_VAR("Extracted macAddr: ", result.macAddr);
+        DEBUG_PRINT_VAR("Extracted data: ", result.data );
 
         // 解析控制參數
         ControlParams params = parseControlParams(result.data);
@@ -40,12 +39,12 @@ void callback(char* topic, byte* payload, unsigned int length) {
             controlGPIO(params);
 
             // 列印控制結果
-            Serial.println("GPIO control executed.");
+            DEBUG_PRINT("GPIO control executed.");
         } else {
-            Serial.println("Error: Invalid control parameters.");
+            DEBUG_PRINT("Error: Invalid control parameters.");
         }
     } else {
-        Serial.println("Error: Failed to extract message.");
+        DEBUG_PRINT("Error: Failed to extract message.");
     }
 }
 
@@ -93,74 +92,35 @@ void initializePins() {
     digitalWrite(PIN_LED, INITIAL_LED_STATE);
     pinMode(PIN_LED_R, OUTPUT);
     digitalWrite(PIN_LED_R, INITIAL_LED_R_STATE);
-    
-/*
-    // 設置按鈕引腳
-    pinMode(PIN_BUTTON, INITIAL_BUTTON_MODE);
-    DEBUG_PRINT("Button pin initialized.");
-
-    // 設置繼電器引腳
-    pinMode(PIN_RELAY, OUTPUT);
-    digitalWrite(PIN_RELAY, INITIAL_RELAY_STATE);
-    DEBUG_PRINT("Relay pin initialized.");
-*/
 }
 
 
 void setup() {
     Serial.begin(115200);
     initializePins();
+    sensorSetup();
     setupWiFi();
     setupMQTT();
     initializeTimers(); // 初始化計時器
 }
 
 unsigned long lastMsg = 0;   // 上次消息發布時間
-bool highLight = true;       // 模擬光度狀態
-
-// LED 閃爍相關設定
-const unsigned long BLINK_INTERVAL = 500; // 閃爍間隔（毫秒）
-bool ledState = false;          // LED 當前狀態
-unsigned long lastBlinkTime = 0; // 上次閃爍時間
-
 void loop() {
     reconnectMQTT(); // 確保 MQTT 連線
 
     unsigned long now = millis();
 
-    // 定期模擬光度值並發佈
-    if (now - lastMsg > 5000) {
+    // 更新速度
+    if (now - lastMsg > UPDATE_PERIOD) {
         lastMsg = now;
 
-        // 模擬光度值
-        int lightIntensity = highLight ? 1200 : 1200;
-        highLight = !highLight;
+        // 更新感測器數據
+        updateSensorData();
 
-        // 將光強值轉換為大端格式的十六進位字串
-        char hexLight[7];
-        sprintf(hexLight, "%06x", lightIntensity);
-
-        // 格式化 MQTT 訊息
-        String lightMessage = "[\n"
-                              "  {\n"
-                              "    \"macAddr\": \"" + String(DEVICE_MAC) + "\",\n"
-                              "    \"data\": \"" + String(LIGHT_MESSAGE_TYPE) + String(hexLight) + "\"\n"
-                              "  }\n"
-                              "]";
-
-        // 發佈到 MQTT 平台
-        if (client.publish(MQTT_UPLINK_TOPIC, lightMessage.c_str())) {
-            Serial.println("lightMessage sent: " + lightMessage);
-        } else {
-            Serial.println("Failed to send lightMessage");
-        }
-    }
-
-    // LED 閃爍邏輯
-    if (now - lastBlinkTime > BLINK_INTERVAL) {
-        lastBlinkTime = now;       // 更新上次閃爍時間
-        ledState = !ledState;      // 切換 LED 狀態
-        digitalWrite(PIN_LED_R, ledState ? HIGH : LOW); // 更新 LED 狀態
+        // 發送感測器數據
+        sendLightData(client);
+        sendTemperatureData(client);
+        sendHumidityData(client);
     }
 
     // 更新多計時器狀態

@@ -4,36 +4,44 @@
 // 定義 DEBUG_MODE 宏以啟用除錯模式
 #define DEBUG_MODE
 
+// 更新週期
+extern const unsigned long UPDATE_PERIOD;
+
+// DHT 配置
+extern const int DHT_PIN;
+extern const int DHT_TYPE;  // DHT22 的值定義為 22，與 DHT 庫一致
+
+// 光敏
+extern const int LDRPIN;
+
 // GPIO PIN 配置
-const int PIN_LED = 2;      // LED Pin
-const int PIN_LED_R = 4;      // LED Pin
+extern const int PIN_LED;
+extern const int PIN_LED_R;
 
 // GPIO 初始狀態
-const bool INITIAL_LED_STATE = LOW;
-const bool INITIAL_LED_R_STATE = HIGH;
-//const bool INITIAL_BUTTON_MODE = INPUT_PULLUP;
-
+extern const bool INITIAL_LED_STATE;
+extern const bool INITIAL_LED_R_STATE;
 
 // 裝置相關配置
-const char DEVICE_MAC[] = "00000000aaBB0D838"; // 裝置 MAC 地址
+extern const char DEVICE_MAC[];
 
 // 訊息類型
-const char LIGHT_MESSAGE_TYPE[] = "0265";      // 光度訊息類型
+extern const char LIGHT_MESSAGE_TYPE[];
+extern const char TEMPERATURE_MESSAGE_TYPE[];
+extern const char HUMIDITY_MESSAGE_TYPE[];
 
 // WiFi 設定
-const char* WIFI_SSID = "shunelle";
-const char* WIFI_PASSWORD = "0967020204";
+extern const char* WIFI_SSID;
+extern const char* WIFI_PASSWORD;
 
 // MQTT 設定
-const char* MQTT_SERVER = "mqtt-pbl.kits.tw";
-const int MQTT_PORT = 1883;
-const char* MQTT_USER = "school";
-const char* MQTT_PASSWORD = "nthu-hsnl";
+extern const char* MQTT_SERVER;
+extern const int MQTT_PORT;
+extern const char* MQTT_USER;
+extern const char* MQTT_PASSWORD;
 
 // MQTT Topic 設定
-const char* MQTT_UPLINK_TOPIC = "PBL/UL/";
-const char* MQTT_DOWNLINK_TOPIC = "WAN-GW/DL/WetChicken";
-
-
+extern const char* MQTT_UPLINK_TOPIC;
+extern const char* MQTT_DOWNLINK_TOPIC;
 
 #endif

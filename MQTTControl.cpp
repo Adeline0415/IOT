@@ -1,16 +1,6 @@
 #include "MQTTControl.h"
 #include "timer.h"
-
-
-
-// 定義除錯列印宏
-#ifdef DEBUG_MODE
-    #define DEBUG_PRINT(x) Serial.println(x)
-    #define DEBUG_PRINT_VAR(label, var) Serial.print(label); Serial.println(var)
-#else
-    #define DEBUG_PRINT(x)
-    #define DEBUG_PRINT_VAR(label, var)
-#endif
+#include "Utility.h"  // for debug
 
 MessageResult extractMessage(String message) {
     DEBUG_PRINT("Debug: Starting to extract message...");
@@ -96,5 +86,4 @@ void controlGPIO(ControlParams params) {
       digitalWrite(params.pin, params.isOn);
     }
 }
-
 
