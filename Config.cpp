@@ -1,6 +1,6 @@
 #include "Config.h"
 #include <Arduino.h>
-
+//TODO: Don't forget modify this part if you add MACRO
 // 更新週期
 const unsigned long UPDATE_PERIOD = 5000;
 

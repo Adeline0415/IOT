@@ -60,7 +60,7 @@ ControlParams parseControlParams(String data) {
 }
 
 
-
+//TODO: you may need to modify to control motor
 void controlGPIO(ControlParams params) {
     if (!params.isValid) {
         DEBUG_PRINT("Error: Invalid control parameters. GPIO control skipped.");

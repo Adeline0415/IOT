@@ -21,7 +21,7 @@ const int ADC_MAX = 4095;     // ESP32 為 12 位 ADC
 #else
 const int ADC_MAX = 1023;     // Arduino 為 10 位 ADC
 #endif
-
+// TODO: need physic genius correct this part
 // 計算 Lux 的函數
 int calculateLux(int adcValue) {
     if (adcValue <= 0) {  // 避免 ADC 值為 0
@@ -47,7 +47,7 @@ int calculateLux(int adcValue) {
     return round(lux);
 }
 
-
+//TODO: should go check doc and see unit
 void updateSensorData() {
     lightIntensity = calculateLux( analogRead(LDRPIN) );
     //lightIntensity = analogRead(LDRPIN);
