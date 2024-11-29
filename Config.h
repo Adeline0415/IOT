@@ -13,6 +13,13 @@ extern const int DHT_TYPE;  // DHT22 的值定義為 22，與 DHT 庫一致
 
 // 光敏
 extern const int LDRPIN;
+extern const int R_FIXED;     // 固定電阻，1 kΩ (棕黑紅金)
+
+extern const float V_IN;
+
+// 光敏電阻特性參數
+extern const float R10;     // 10 Lux 下的電阻值 (5kΩ，亮電阻中值)
+extern const float GAMMA;      // 伽馬值 (γ)
 
 // GPIO PIN 配置
 extern const int PIN_LED;

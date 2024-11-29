@@ -16,6 +16,7 @@ void updateSensorData();
 
 // 發送光敏電阻數據
 void sendLightData(PubSubClient &client);
+int calculateLux(int adcValue);
 
 // 發送溫度數據
 void sendTemperatureData(PubSubClient &client);

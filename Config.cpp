@@ -10,6 +10,13 @@ const int DHT_TYPE = 22;  // DHT22 的值定義為 22，與 DHT 庫一致
 
 // 光敏
 const int LDRPIN = 34;
+const int R_FIXED = 1000;     // 固定電阻，1 kΩ (棕黑紅金)
+
+const float V_IN = 3.3;
+
+// 光敏電阻特性參數
+const float R10 = 5000.0;     // 10 Lux 下的電阻值 (5kΩ，亮電阻中值)
+const float GAMMA = 0.6;      // 伽馬值 (γ)
 
 
 // GPIO PIN 配置

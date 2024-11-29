@@ -16,8 +16,41 @@ void sensorSetup() {
     dht.begin();
 }
 
+#if defined(ESP32)
+const int ADC_MAX = 4095;     // ESP32 為 12 位 ADC
+#else
+const int ADC_MAX = 1023;     // Arduino 為 10 位 ADC
+#endif
+
+// 計算 Lux 的函數
+int calculateLux(int adcValue) {
+    if (adcValue <= 0) {  // 避免 ADC 值為 0
+        return 0;
+    }
+
+    // 計算輸出電壓
+    float vOut = (adcValue / (float)ADC_MAX) * V_IN;
+    if (vOut < 0.1) {  // 避免 vOut 過小
+        return 0;
+    }
+
+    // 計算光敏電阻的電阻值
+    float rLDR = R_FIXED * (V_IN / vOut - 1.0);
+    if (rLDR <= 0) {  // 避免電阻值異常
+        return 0;
+    }
+
+    // 計算 Lux
+    float lux = pow(rLDR / R10, -1.0 / GAMMA);
+
+    // 返回整數 Lux
+    return round(lux);
+}
+
+
 void updateSensorData() {
-    lightIntensity = analogRead(LDRPIN);
+    lightIntensity = calculateLux( analogRead(LDRPIN) );
+    //lightIntensity = analogRead(LDRPIN);
     humidity = dht.readHumidity() * 2;
     temperature = dht.readTemperature() * 10;
     //lightIntensity = 50;
