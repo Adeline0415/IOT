@@ -18,8 +18,11 @@ void sensorSetup() {
 
 void updateSensorData() {
     lightIntensity = analogRead(LDRPIN);
-    humidity = dht.readHumidity();
-    temperature = dht.readTemperature();
+    humidity = dht.readHumidity() * 2;
+    temperature = dht.readTemperature() * 10;
+    //lightIntensity = 50;
+    //humidity = 100;
+    //temperature = 300;
 }
 
 void sendLightData(PubSubClient &client) {

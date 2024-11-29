@@ -88,10 +88,10 @@ void reconnectMQTT() {
 
 void initializePins() {
     // 設置 LED 引腳
-    pinMode(PIN_LED, OUTPUT);
-    digitalWrite(PIN_LED, INITIAL_LED_STATE);
-    pinMode(PIN_LED_R, OUTPUT);
-    digitalWrite(PIN_LED_R, INITIAL_LED_R_STATE);
+    //pinMode(PIN_LED, OUTPUT);
+    //digitalWrite(PIN_LED, INITIAL_LED_STATE);
+    //pinMode(PIN_LED_R, OUTPUT);
+    //digitalWrite(PIN_LED_R, INITIAL_LED_R_STATE);
 }
 
 

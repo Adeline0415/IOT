@@ -13,12 +13,12 @@ const int LDRPIN = 34;
 
 
 // GPIO PIN 配置
-const int PIN_LED = 2;
-const int PIN_LED_R = 4;
+//const int PIN_LED = 2;
+//const int PIN_LED_R = 4;
 
 // GPIO 初始狀態
-const bool INITIAL_LED_STATE = LOW;
-const bool INITIAL_LED_R_STATE = HIGH;
+//const bool INITIAL_LED_STATE = LOW;
+//const bool INITIAL_LED_R_STATE = HIGH;
 
 // 裝置相關配置
 const char DEVICE_MAC[] = "00000000aaBB0D838";
