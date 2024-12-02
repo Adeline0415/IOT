@@ -18,12 +18,6 @@ extern const int R_FIXED;     // 固定電阻，1 kΩ (棕黑紅金)
 extern const int RAIN_DIGITAL;
 extern const int RAIN_ANALOG;
 
-// Motor
-// extern const int motor1Pin1; 
-// extern const int motor1Pin2;
-// extern const int motor2Pin1; 
-// extern const int motor2Pin2;
-
 extern const float V_IN;
 
 // 光敏電阻特性參數
