@@ -1,10 +1,8 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-
-//TODO: you may need to add MACRO
 // 定義 DEBUG_MODE 宏以啟用除錯模式
-#define DEBUG_MODE
+#define DEBUG_MODE 1
 
 // 更新週期
 extern const unsigned long UPDATE_PERIOD;
@@ -16,6 +14,9 @@ extern const int DHT_TYPE;  // DHT22 的值定義為 22，與 DHT 庫一致
 // 光敏
 extern const int LDRPIN;
 extern const int R_FIXED;     // 固定電阻，1 kΩ (棕黑紅金)
+
+extern const int RAIN_DIGITAL;
+extern const int RAIN_ANALOG;
 
 extern const float V_IN;
 
@@ -38,6 +39,7 @@ extern const char DEVICE_MAC[];
 extern const char LIGHT_MESSAGE_TYPE[];
 extern const char TEMPERATURE_MESSAGE_TYPE[];
 extern const char HUMIDITY_MESSAGE_TYPE[];
+extern const char RAINING_MESSAGE_TYPE[];
 
 // WiFi 設定
 extern const char* WIFI_SSID;

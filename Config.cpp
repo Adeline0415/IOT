@@ -1,6 +1,5 @@
 #include "Config.h"
 #include <Arduino.h>
-//TODO: Don't forget modify this part if you add MACRO
 // 更新週期
 const unsigned long UPDATE_PERIOD = 5000;
 
@@ -18,14 +17,8 @@ const float V_IN = 3.3;
 const float R10 = 5000.0;     // 10 Lux 下的電阻值 (5kΩ，亮電阻中值)
 const float GAMMA = 0.6;      // 伽馬值 (γ)
 
-
-// GPIO PIN 配置
-//const int PIN_LED = 2;
-//const int PIN_LED_R = 4;
-
-// GPIO 初始狀態
-//const bool INITIAL_LED_STATE = LOW;
-//const bool INITIAL_LED_R_STATE = HIGH;
+const int RAIN_DIGITAL = 18;
+const int RAIN_ANALOG = 35;
 
 // 裝置相關配置
 const char DEVICE_MAC[] = "00000000aaBB0D838";
@@ -34,10 +27,11 @@ const char DEVICE_MAC[] = "00000000aaBB0D838";
 const char LIGHT_MESSAGE_TYPE[] = "0265";
 const char TEMPERATURE_MESSAGE_TYPE[] = "0267";
 const char HUMIDITY_MESSAGE_TYPE[] = "0268";
+const char RAINING_MESSAGE_TYPE[] = "028e";
 
 // WiFi 設定
-const char* WIFI_SSID = "shunelle";
-const char* WIFI_PASSWORD = "0967020204";
+const char* WIFI_SSID = "";
+const char* WIFI_PASSWORD = "";
 
 // MQTT 設定
 const char* MQTT_SERVER = "mqtt-pbl.kits.tw";

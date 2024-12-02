@@ -24,5 +24,8 @@ void sendTemperatureData(PubSubClient &client);
 // 發送濕度數據
 void sendHumidityData(PubSubClient &client);
 
+// 發送下雨判斷
+void sendRainingData(PubSubClient &client);
+
 
 #endif

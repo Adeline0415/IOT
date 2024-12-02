@@ -2,7 +2,7 @@
 #include "Config.h"       // 引入 WiFi 和 MQTT 設定
 #include "SensorHandler.h"
 #include "DHT.h"
-
+#include "Timer.h"
  
 DHT dht(DHT_PIN, DHT_TYPE);
 
@@ -10,6 +10,8 @@ DHT dht(DHT_PIN, DHT_TYPE);
 int lightIntensity = 0;
 int humidity = 0;
 int temperature = 0;
+int rainning = 0;
+int flag = 1;
 
 
 void sensorSetup() {
@@ -21,7 +23,6 @@ const int ADC_MAX = 4095;     // ESP32 為 12 位 ADC
 #else
 const int ADC_MAX = 1023;     // Arduino 為 10 位 ADC
 #endif
-// TODO: need physic genius correct this part
 // 計算 Lux 的函數
 int calculateLux(int adcValue) {
     if (adcValue <= 0) {  // 避免 ADC 值為 0
@@ -47,15 +48,11 @@ int calculateLux(int adcValue) {
     return round(lux);
 }
 
-//TODO: should go check doc and see unit
 void updateSensorData() {
-    lightIntensity = calculateLux( analogRead(LDRPIN) );
-    //lightIntensity = analogRead(LDRPIN);
+    lightIntensity = analogRead(LDRPIN);
     humidity = dht.readHumidity() * 2;
     temperature = dht.readTemperature() * 10;
-    //lightIntensity = 50;
-    //humidity = 100;
-    //temperature = 300;
+    rainning = analogRead(RAIN_ANALOG);
 }
 
 void sendLightData(PubSubClient &client) {
@@ -112,5 +109,33 @@ void sendHumidityData(PubSubClient &client) {
         Serial.println("Humidity data sent: " + message);
     } else {
         Serial.println("Failed to send humidity data");
+    }
+}
+
+
+
+void sendRainingData(PubSubClient &client){
+    String message = String("[\n") +
+                     "  {\n" +
+                     "    \"macAddr\": \"" + String(DEVICE_MAC) + "\",\n" +
+                     "    \"data\": \"" + String(RAINING_MESSAGE_TYPE) + (rainning > 800 ? "0" : "1") + "\"\n" +
+                     "  }\n" +
+                     "]";
+    if (client.publish(MQTT_UPLINK_TOPIC, message.c_str())) {
+        Serial.println("Raining data sent: " + message + "raining" + rainning);
+    } else {
+        Serial.println("Failed to send raining data");
+    }
+    if(rainning >= 800 && flag == 0){
+        Serial.println("add timer front");
+        addTimer(33, 5);
+        addTimer(26, 4);
+        flag = 1;
+    }
+    else if(rainning < 800 && flag == 1){
+        Serial.println("add timer back");
+        addTimer(25, 4);
+        addTimer(27, 5);
+        flag = 0;
     }
 }

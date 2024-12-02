@@ -6,6 +6,9 @@
 #include "timer.h"
 #include "SensorHandler.h"
 
+#define ENABLEA 32
+#define ENABLEB 14
+
 WiFiClient espClient;
 PubSubClient client(espClient);
 
@@ -87,11 +90,16 @@ void reconnectMQTT() {
 }
 
 void initializePins() {
-    // 設置 LED 引腳
-    //pinMode(PIN_LED, OUTPUT);
-    //digitalWrite(PIN_LED, INITIAL_LED_STATE);
-    //pinMode(PIN_LED_R, OUTPUT);
-    //digitalWrite(PIN_LED_R, INITIAL_LED_R_STATE);
+    pinMode(27, OUTPUT);
+    pinMode(26, OUTPUT);
+    pinMode(25, OUTPUT);
+    pinMode(33, OUTPUT);
+    pinMode(35, INPUT);
+    pinMode(18, INPUT);
+    pinMode(ENABLEB, OUTPUT);
+    pinMode(ENABLEA, OUTPUT);
+    digitalWrite(ENABLEA, HIGH);
+    digitalWrite(ENABLEB, HIGH);
 }
 
 
@@ -102,6 +110,7 @@ void setup() {
     setupWiFi();
     setupMQTT();
     initializeTimers(); // 初始化計時器
+    analogReadResolution(10);
 }
 
 unsigned long lastMsg = 0;   // 上次消息發布時間
@@ -121,6 +130,7 @@ void loop() {
         sendLightData(client);
         sendTemperatureData(client);
         sendHumidityData(client);
+        sendRainingData(client);
     }
 
     // 更新多計時器狀態
@@ -129,5 +139,3 @@ void loop() {
     // 確保 MQTT 客戶端正常運行
     client.loop();
 }
-
-
