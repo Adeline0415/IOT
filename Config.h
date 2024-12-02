@@ -1,8 +1,6 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-
-//TODO: you may need to add MACRO
 // 定義 DEBUG_MODE 宏以啟用除錯模式
 #define DEBUG_MODE 1
 
