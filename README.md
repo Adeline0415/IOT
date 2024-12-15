@@ -88,11 +88,14 @@ This project successfully demonstrated the potential of IoT technologies in smar
 Watch our project in action:
 
 ## Credits
-This project was collaboratively developed by:
-
-- **[Your Name]**: Hardware design and implementation
-- **[Teammate 1's Name]**: Sensor integration and data processing
-- **[Teammate 2's Name]**: MQTT communication and platform integration
-- **[Teammate 3's Name]**: Motor control and automation logic
+## Credits
+This project was collaboratively developed by (in alphabetical order based on English names):
+- **Chia-Hsuan Yu**: Assisted with code development  
+- **Ni-Hsuan Tsai**: Device design and construction  
+- **Sheng-Mei Kao**: Project management and market research  
+- **Ting Li**: Device design, construction, and hardware-software integration  
+- **Tsun-Han Chang**: Arduino code development  
+- **Tzu-Yun Lai**: Arduino code development and program architecture design  
 
 Special thanks to the competition organizers for providing the IoT platform and resources.
+
